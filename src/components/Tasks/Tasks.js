@@ -4,6 +4,14 @@ import Collapsible from "../Collapsible/Collapsible";
 
 const Tasks = () => {
   let [isNewTaskOpen, setIsNewTaskOpen] = useState(false);
+
+  const onSaveClick = () => {
+    setIsNewTaskOpen(!isNewTaskOpen);
+  };
+
+  const onCancelClick = () => {
+    setIsNewTaskOpen(!isNewTaskOpen);
+  };
   return (
     <div className="outer-container">
       <div className="container">
@@ -12,15 +20,19 @@ const Tasks = () => {
             <h1>Tasks</h1>
           </div>
           <div className="create-button-container">
-            <button
-              className="button create-button"
-              onClick={() => {
-                setIsNewTaskOpen(true);
-              }}
-            >
-              <i className="fa fa-calendar-plus"></i>
-              &nbsp;Create
-            </button>
+            {!isNewTaskOpen ? (
+              <button
+                className="button create-button"
+                onClick={() => {
+                  setIsNewTaskOpen(!isNewTaskOpen);
+                }}
+              >
+                <i className="fa fa-calendar-plus"></i>
+                &nbsp;Create
+              </button>
+            ) : (
+              ""
+            )}
           </div>
         </div>
         <Collapsible isOpen={isNewTaskOpen}>
@@ -63,14 +75,19 @@ const Tasks = () => {
             {/* Form group ends */}
 
             <div className="button-group">
-              <button className="button save-button">
+              <button
+                className="button save-button"
+                onClick={() => {
+                  onSaveClick();
+                }}
+              >
                 <i className="fa fa-save"></i>
                 &nbsp;&nbsp;Save Task
               </button>
               <button
                 className="button cancel-button"
                 onClick={() => {
-                  setIsNewTaskOpen(false);
+                  onCancelClick();
                 }}
               >
                 <i className="fa fa-window-close"></i>
