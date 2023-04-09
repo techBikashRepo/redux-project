@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Tasks.css";
+import Collapsible from "../Collapsible/Collapsible";
 
 const Tasks = () => {
+  let [isNewTaskOpen, setIsNewTaskOpen] = useState(false);
   return (
     <div className="outer-container">
       <div className="container">
@@ -10,61 +12,73 @@ const Tasks = () => {
             <h1>Tasks</h1>
           </div>
           <div className="create-button-container">
-            <button className="button create-button">
+            <button
+              className="button create-button"
+              onClick={() => {
+                setIsNewTaskOpen(true);
+              }}
+            >
               <i className="fa fa-calendar-plus"></i>
               &nbsp;Create
             </button>
           </div>
         </div>
-        <div className="new-task-container">
-          <h4 className="new-task-title">New Task</h4>
-          {/* Form group starts */}
+        <Collapsible isOpen={isNewTaskOpen}>
+          <div className="new-task-container">
+            <h4 className="new-task-title">New Task</h4>
+            {/* Form group starts */}
 
-          <div className="form-group">
-            <label htmlFor="task-title" className="form-label">
-              Title:
-            </label>
-            <div className="form-input">
-              <input
-                type="text"
-                placeholder="Task Title"
-                className="text-box"
-                id="task-title"
-              />
+            <div className="form-group">
+              <label htmlFor="task-title" className="form-label">
+                Title:
+              </label>
+              <div className="form-input">
+                <input
+                  type="text"
+                  placeholder="Task Title"
+                  className="text-box"
+                  id="task-title"
+                />
+              </div>
+            </div>
+
+            {/* Form group ends */}
+
+            {/* Form group starts */}
+
+            <div className="form-group">
+              <label htmlFor="task-title" className="form-label">
+                Task Date and Time:
+              </label>
+              <div className="form-input">
+                <input
+                  type="datetime-local"
+                  placeholder="Task Date and Time"
+                  className="text-box"
+                  id="task-date-time"
+                />
+              </div>
+            </div>
+
+            {/* Form group ends */}
+
+            <div className="button-group">
+              <button className="button save-button">
+                <i className="fa fa-save"></i>
+                &nbsp;&nbsp;Save Task
+              </button>
+              <button
+                className="button cancel-button"
+                onClick={() => {
+                  setIsNewTaskOpen(false);
+                }}
+              >
+                <i className="fa fa-window-close"></i>
+                &nbsp;&nbsp;Cancel Task
+              </button>
             </div>
           </div>
-
-          {/* Form group ends */}
-
-          {/* Form group starts */}
-
-          <div className="form-group">
-            <label htmlFor="task-title" className="form-label">
-              Task Date and Time:
-            </label>
-            <div className="form-input">
-              <input
-                type="datetime-local"
-                placeholder="Task Date and Time"
-                className="text-box"
-                id="task-date-time"
-              />
-            </div>
-          </div>
-
-          {/* Form group ends */}
-
-          <div className="button-group">
-            <button className="button save-button">
-              <i className="fa fa-save"></i>
-              &nbsp;&nbsp;Save Task
-            </button>
-            <button className="button cancel-button">
-              <i className="fa fa-window-close"></i>
-              &nbsp;&nbsp;Cancel Task
-            </button>
-          </div>
-        </div>
+        </Collapsible>
         <div className="search-box">
           <input type="search" placeholder="Search" />
           <i className="fa fa-search"></i>
