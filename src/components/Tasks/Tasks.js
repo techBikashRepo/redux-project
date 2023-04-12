@@ -1,13 +1,37 @@
 import React, { useState } from "react";
 import "./Tasks.css";
 import Collapsible from "../Collapsible/Collapsible";
-//import actions from "../../actions";
+import actions from "../../actions";
+import { useSelector, useDispatch } from "react-redux";
+import { toDisplayableDateFormat } from "../../utils";
 
 const Tasks = () => {
+  const tasks = useSelector((state) => state.tasks);
+
+  const [taskTitle, setTaskTitle] = useState("");
+  const [taskDateTime, setTaskDateTime] = useState("");
+
+  const dispatch = useDispatch();
+
   let [isNewTaskOpen, setIsNewTaskOpen] = useState(false);
 
   const onSaveClick = () => {
+    dispatch(
+      actions.createTask({
+        id: Math.floor(Math.random() * 10000000),
+        taskTitle: taskTitle,
+        taskDateTime: taskDateTime,
+      })
+    );
+    setTaskTitle("");
+    setTaskDateTime("");
     setIsNewTaskOpen(!isNewTaskOpen);
+  };
+
+  const onDeleteClick = (task) => {
+    if (window.confirm("Are you sure to delete the task?")) {
+      dispatch(actions.deleteTask(task.id));
+    }
   };
 
   const onCancelClick = () => {
@@ -51,6 +75,10 @@ const Tasks = () => {
                   placeholder="Task Title"
                   className="text-box"
                   id="task-title"
+                  value={taskTitle}
+                  onChange={(event) => {
+                    setTaskTitle(event.target.value);
+                  }}
                 />
               </div>
             </div>
@@ -69,6 +97,10 @@ const Tasks = () => {
                   placeholder="Task Date and Time"
                   className="text-box"
                   id="task-date-time"
+                  value={taskDateTime}
+                  onChange={(event) => {
+                    setTaskDateTime(event.target.value);
+                  }}
                 />
               </div>
             </div>
@@ -104,45 +136,35 @@ const Tasks = () => {
 
         <div className="content-body">
           {/* Tasks Starts */}
-          <div className="task">
-            <div className="task-body">
-              <div className="task-title">
-                <i className="fa fa-thumbtack"></i>
-                <span className="task-title-text">Doctor's Appointment</span>
+          {tasks.map((task) => (
+            <div className="task" key={task.id}>
+              <div className="task-body">
+                <div className="task-title">
+                  <i className="fa fa-thumbtack"></i>
+                  <span className="task-title-text">{task.taskTitle}</span>
+                </div>
+                <div className="task-subtitle">
+                  <i className="fa fa-clock"></i>
+                  <span className="task-subtitle-text">
+                    {toDisplayableDateFormat(task.taskDateTime)}
+                  </span>
+                </div>
               </div>
-              <div className="task-subtitle">
-                <i className="fa fa-clock"></i>
-                <span className="task-subtitle-text">July 16th at 9:30 PM</span>
-              </div>
-            </div>
 
-            <div className="task-options">
-              <button className="icon-button" title="Delete">
-                &times;
-              </button>
-            </div>
-          </div>
-          {/* Tasks Ends */}
-
-          {/* Tasks Starts */}
-          <div className="task">
-            <div className="task-body">
-              <div className="task-title">
-                <i className="fa fa-thumbtack"></i>
-                <span className="task-title-text">School's Appointment</span>
-              </div>
-              <div className="task-subtitle">
-                <i className="fa fa-clock"></i>
-                <span className="task-subtitle-text">June 17th at 8:30 AM</span>
+              <div className="task-options">
+                <button
+                  className="icon-button"
+                  title="Delete"
+                  onClick={() => {
+                    onDeleteClick(task);
+                  }}
+                >
+                  &times;
+                </button>
               </div>
             </div>
+          ))}
 
-            <div className="task-options">
-              <button className="icon-button" title="Delete">
-                &times;
-              </button>
-            </div>
-          </div>
           {/* Tasks Ends */}
         </div>
       </div>
