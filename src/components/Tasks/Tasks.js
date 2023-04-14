@@ -15,7 +15,7 @@ const Tasks = () => {
     dispatch(actions.fetchTasks());
   }, [dispatch]);
 
-  const tasks = useSelector((state) => state.tasks);
+  const tasks = useSelector((state) => state.tasks.data);
   const filteredTasks = tasks.filter(
     (task) => task.taskTitle.toLowerCase().indexOf(search.toLowerCase()) >= 0
   );
