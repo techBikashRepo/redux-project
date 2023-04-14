@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Tasks.css";
 import Collapsible from "../Collapsible/Collapsible";
 import actions from "../../actions";
@@ -6,12 +6,19 @@ import { useSelector, useDispatch } from "react-redux";
 import { toDisplayableDateFormat } from "../../utils";
 
 const Tasks = () => {
-  const tasks = useSelector((state) => state.tasks);
-
   const [taskTitle, setTaskTitle] = useState("");
   const [taskDateTime, setTaskDateTime] = useState("");
-
+  const [search, setSearch] = useState("");
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(actions.fetchTasks());
+  }, [dispatch]);
+
+  const tasks = useSelector((state) => state.tasks);
+  const filteredTasks = tasks.filter(
+    (task) => task.taskTitle.toLowerCase().indexOf(search.toLowerCase()) >= 0
+  );
 
   let [isNewTaskOpen, setIsNewTaskOpen] = useState(false);
 
@@ -130,13 +137,20 @@ const Tasks = () => {
           </div>
         </Collapsible>
         <div className="search-box">
-          <input type="search" placeholder="Search" />
+          <input
+            type="search"
+            placeholder="Search"
+            value={search}
+            onChange={(event) => {
+              setSearch(event.target.value);
+            }}
+          />
           <i className="fa fa-search"></i>
         </div>
 
         <div className="content-body">
           {/* Tasks Starts */}
-          {tasks.map((task) => (
+          {filteredTasks.map((task) => (
             <div className="task" key={task.id}>
               <div className="task-body">
                 <div className="task-title">

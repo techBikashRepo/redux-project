@@ -1,5 +1,5 @@
-import { createTask, deleteTask } from "./tasks";
+import { createTask, deleteTask, fetchTasks } from "./tasks";
 
-const actions = { createTask, deleteTask };
+const actions = { createTask, deleteTask, fetchTasks };
 
 export default actions;
