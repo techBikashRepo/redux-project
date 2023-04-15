@@ -19,7 +19,7 @@ export const fetchTasks = () => async (dispatch) => {
 };
 
 export const createTask = (newTask) => async (dispatch) => {
-  dispatch({ type: actionTypes.CREATE_TASKS_REQUEST });
+  dispatch({ type: actionTypes.CREATE_TASKS_REQUEST, payload: newTask });
 
   try {
     var tasksResponse = await axios.post(
