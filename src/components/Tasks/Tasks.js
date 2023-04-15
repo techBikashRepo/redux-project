@@ -15,10 +15,13 @@ const Tasks = () => {
     dispatch(actions.fetchTasks());
   }, [dispatch]);
 
-  const tasks = useSelector((state) => state.tasks.data);
-  const filteredTasks = tasks.filter(
-    (task) => task.taskTitle.toLowerCase().indexOf(search.toLowerCase()) >= 0
-  );
+  const tasks = useSelector((state) => state.tasks);
+  let filteredTasks = [];
+  if (tasks && tasks.data.length > 0) {
+    filteredTasks = tasks.data.filter(
+      (task) => task.taskTitle.toLowerCase().indexOf(search.toLowerCase()) >= 0
+    );
+  }
 
   let [isNewTaskOpen, setIsNewTaskOpen] = useState(false);
 
@@ -49,7 +52,11 @@ const Tasks = () => {
       <div className="container">
         <div className="app-title-container">
           <div className="app-title">
-            <h1>Tasks</h1>
+            <h1>
+              Tasks
+              {tasks.loading ? <i className="fa fa-spinner fa-spin"></i> : ""}
+            </h1>
+            {tasks.error ? <h2>{tasks.error.message}</h2> : ""}
           </div>
           <div className="create-button-container">
             {!isNewTaskOpen ? (
